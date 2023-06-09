@@ -1,6 +1,7 @@
 ---
 - hosts: localhost
   become: True
+  become_host: jenkins
   tasks:
     - name: Copy file with owner and permissions
       copy:
