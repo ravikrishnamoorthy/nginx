@@ -1,6 +1,6 @@
 ---
 - name: Enable my.website Nginx site
-  hosts: 192.168.0.13
+  hosts: localhost
   become: true
 
   tasks:
