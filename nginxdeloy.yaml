@@ -1,0 +1,17 @@
+---
+- hosts: localhost
+  become: True
+  tasks:
+    - name: Copy file with owner and permissions
+      copy:
+        src: nginx.conf.j2
+        dest: /etc/nginx/sites-enabled/my.website.com.conf
+        owner: root
+        group: root
+        mode: '0777'
+        notify: restart
+  handlers:
+    - name: Restart service httpd, in all cases
+      service:
+        name: httpd
+        state: restarted
