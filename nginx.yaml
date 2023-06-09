@@ -1,0 +1,30 @@
+---
+- name: Deploy and configure my.website application
+  hosts: localhost
+  become: true
+
+  tasks:
+    - name: Copy application files
+      copy:
+        src: /home/ravi/my.website.com
+        dest: /home/ravi/my.website.com
+      notify:
+        - Restart Nginx
+
+    - name: Configure Nginx
+      template:
+        src: nginx.conf.j2
+        dest: /etc/nginx/sites-available/my.website.com.conf
+      notify:
+        - Reload Nginx
+
+  handlers:
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted
+
+    - name: Reload Nginx
+      service:
+        name: nginx
+        state: reloaded

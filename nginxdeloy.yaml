@@ -1,18 +1,21 @@
 ---
-- hosts: localhost
-  become: True
-  become_host: jenkins
+- name: Enable my.website Nginx site
+  hosts: 192.168.0.13
+  become: true
+
   tasks:
-    - name: Copy file with owner and permissions
-      copy:
-        src: nginx.conf.j2
-        dest: /etc/nginx/sites-enabled/my.website.com.conf
-        owner: root
-        group: root
-        mode: '0777'
-        notify: restart
-  handlers:
+    - name: start nginx
+      service:
+          name: nginx
+          state: started
+    - name: Create symbolic link for Nginx site
+      file:
+        src: /etc/nginx/sites-available/my.nginx.com.conf
+        dest: /etc/nginx/sites-enabled/my.nginx.com.conf
+        state: link
+        force: yes
     - name: Restart service httpd, in all cases
       service:
-        name: httpd
+        name: nginx
         state: restarted
+
